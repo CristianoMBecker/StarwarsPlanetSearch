@@ -39,3 +39,11 @@
     transform: rotate(360deg);
   }
 }
+
+th {
+  padding-right: 30px;
+}
+
+td {
+  max-width: 500px;
+}
