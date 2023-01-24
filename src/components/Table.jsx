@@ -5,6 +5,7 @@ function Table() {
   const { tableFetch } = useFetch();
   const [planetData, setPlanetData] = useState([]);
   const [isFetched, setFetched] = useState(false);
+  const [text, setText] = useState('');
 
   async function getPlanets() {
     const planets = await tableFetch();
@@ -12,13 +13,25 @@ function Table() {
     setFetched(true);
   }
 
+  const handleChange = ({ target }) => {
+    setText((target.value).toLowerCase());
+  };
+
   useEffect(() => {
     getPlanets();
   }, []);
 
   return (
     <main>
-      <h1>Projeto - Star Wars Planet Search</h1>
+      <label htmlFor="filterText">
+        <input
+          type="text"
+          data-testid="name-filter"
+          value={ text }
+          name="text"
+          onChange={ handleChange }
+        />
+      </label>
       <table>
         <thead>
           <tr>
@@ -39,29 +52,33 @@ function Table() {
         </thead>
         {
           isFetched
-          && (
-            <tbody>
-              {
-                planetData.map((planet, index) => (
-                  <tr key={ index }>
-                    <td>{ planet.name }</td>
-                    <td>{ planet.rotation_period }</td>
-                    <td>{ planet.orbital_period }</td>
-                    <td>{ planet.diameter }</td>
-                    <td>{ planet.climate }</td>
-                    <td>{ planet.gravity }</td>
-                    <td>{ planet.terrain }</td>
-                    <td>{ planet.surface_water }</td>
-                    <td>{ planet.population }</td>
-                    <td>{ planet.films }</td>
-                    <td>{ planet.created }</td>
-                    <td>{ planet.edited }</td>
-                    <td>{ planet.URL }</td>
-                  </tr>
-                ))
-              }
-            </tbody>
-          )
+            ? (
+              <tbody>
+                {
+                  planetData
+                    .filter((planet) => planet.name.toLowerCase()
+                      .includes(text.toLowerCase()))
+                    .map((planet, index) => (
+                      <tr key={ index }>
+                        <td>{ planet.name }</td>
+                        <td>{ planet.rotation_period }</td>
+                        <td>{ planet.orbital_period }</td>
+                        <td>{ planet.diameter }</td>
+                        <td>{ planet.climate }</td>
+                        <td>{ planet.gravity }</td>
+                        <td>{ planet.terrain }</td>
+                        <td>{ planet.surface_water }</td>
+                        <td>{ planet.population }</td>
+                        <td>{ planet.films }</td>
+                        <td>{ planet.created }</td>
+                        <td>{ planet.edited }</td>
+                        <td>{ planet.URL }</td>
+                      </tr>
+                    ))
+                }
+              </tbody>
+            )
+            : <td>Loading...</td>
         }
       </table>
     </main>

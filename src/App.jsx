@@ -6,6 +6,7 @@ import useFetch from './hooks/tableFetch';
 function App() {
   return (
     <fetchContext.Provider value={ useFetch() }>
+      <h1>Projeto - Star Wars Planet Search</h1>
       <Table />
     </fetchContext.Provider>
   );

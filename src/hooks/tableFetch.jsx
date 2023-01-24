@@ -18,6 +18,7 @@ function useFetch() {
       }
 
       const data = await response.json();
+      delete data.residents;
       return data.results;
     } catch (error) {
       setErrors(error);

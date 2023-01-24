@@ -40,10 +40,7 @@
   }
 }
 
-th {
-  padding-right: 30px;
-}
-
-td {
-  max-width: 500px;
+body {
+  background-color: black;
+  color: white;
 }
