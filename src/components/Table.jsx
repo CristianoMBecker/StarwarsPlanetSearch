@@ -9,6 +9,7 @@ function Table() {
   const [number, setNumber] = useState('0');
   const [columns, setColumns] = useState('population');
   const [comparison, setComparison] = useState('maior que');
+  const [filters, setFilters] = useState([]);
 
   async function getPlanets() {
     const planets = await tableFetch();
@@ -35,6 +36,7 @@ function Table() {
     if (comparison === 'maior que') {
       setPlanetData(planetData.filter((planet) => planet[columns] > +number));
     }
+    setFilters([...filters, `${columns} ${comparison} ${number}`]);
   };
 
   const handleChange = ({ target }) => {
@@ -48,6 +50,8 @@ function Table() {
   useEffect(() => {
     textFilter();
   }, [text]);
+
+  console.log(filters);
 
   return (
     <main>
@@ -98,6 +102,23 @@ function Table() {
           FILTRAR
         </button>
       </label>
+      {
+        filters
+        && (
+          filters.map((filter, index) => (
+            <div key={ index } data-testid="filter">
+              <h5>
+                { filter }
+                <button
+                  type="button"
+                  name={ columns }
+                >
+                  X
+                </button>
+              </h5>
+            </div>
+          )))
+      }
       <table>
         <thead>
           <tr>
