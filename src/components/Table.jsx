@@ -51,8 +51,6 @@ function Table() {
     textFilter();
   }, [text]);
 
-  console.log(filters);
-
   return (
     <main>
       <label htmlFor="filterText">
