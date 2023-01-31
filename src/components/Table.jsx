@@ -10,6 +10,8 @@ function Table() {
   const [columns, setColumns] = useState('population');
   const [comparison, setComparison] = useState('maior que');
   const [filters, setFilters] = useState([]);
+  const [options, setOptions] = useState(['population',
+    'orbital_period', 'diameter', 'rotation_period', 'surface_water']);
 
   async function getPlanets() {
     const planets = await tableFetch();
@@ -26,17 +28,24 @@ function Table() {
     }
   };
 
-  const buttonFilter = () => {
+  const buttonFilter = ({ target }) => {
     if (comparison === 'igual a') {
       setPlanetData(planetData.filter((planet) => planet[columns] === number));
     }
     if (comparison === 'menor que') {
-      setPlanetData(planetData.filter((planet) => planet[columns] < +number));
+      setPlanetData(planetData.filter((planet) => planet[columns] < Number(number)));
     }
     if (comparison === 'maior que') {
-      setPlanetData(planetData.filter((planet) => planet[columns] > +number));
+      setPlanetData(planetData.filter((planet) => planet[columns] > Number(number)));
     }
     setFilters([...filters, `${columns} ${comparison} ${number}`]);
+    if (options.includes(columns)) {
+      setOptions(
+        options.filter((op) => op !== columns),
+      );
+      return;
+    }
+    setOptions([...options, target.value]);
   };
 
   const handleChange = ({ target }) => {
@@ -50,6 +59,10 @@ function Table() {
   useEffect(() => {
     textFilter();
   }, [text]);
+
+  useEffect(() => {
+    setColumns(options[0]);
+  }, [options]);
 
   return (
     <main>
@@ -68,11 +81,11 @@ function Table() {
           data-testid="column-filter"
           onChange={ ({ target }) => setColumns(target.value) }
         >
-          <option value="population">population</option>
-          <option value="orbital_period">orbital_period</option>
-          <option value="diameter">diameter</option>
-          <option value="rotation_period">rotation_period</option>
-          <option value="surface_water">surface_water</option>
+          {
+            options.map((op) => (
+              <option key={ op } value={ op }>{ op }</option>
+            ))
+          }
         </select>
         <select
           name="comparison-filter"
@@ -160,8 +173,11 @@ function Table() {
                     ))
                 }
               </tbody>
+            ) : (
+              <tr>
+                Loading...
+              </tr>
             )
-            : <td>Loading...</td>
         }
       </table>
     </main>
