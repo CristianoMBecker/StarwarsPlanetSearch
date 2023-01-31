@@ -6,6 +6,7 @@ function Table() {
   const [planetData, setPlanetData] = useState([]);
   const [isFetched, setFetched] = useState(false);
   const [text, setText] = useState('');
+  const [filtered, setFiltered] = useState(false);
   const [number, setNumber] = useState('0');
   const [columns, setColumns] = useState('population');
   const [comparison, setComparison] = useState('maior que');
@@ -28,15 +29,34 @@ function Table() {
     }
   };
 
+  const RedoFilters = async () => {
+    const planets = await tableFetch();
+    filters.forEach((f) => {
+      const filtro = f.toString().split(' ');
+      if (filtro[1] === 'menor') {
+        setPlanetData(planets
+          .filter((planet) => Number(planet[filtro[0]]) < Number(filtro[3])));
+      }
+      if (filtro[1] === 'maior') {
+        setPlanetData(planets
+          .filter((planet) => Number(planet[filtro[0]]) > Number(filtro[3])));
+      }
+      if (filtro[1] === 'igual') {
+        setPlanetData(planetData
+          .filter((planet) => Number(planet[filtro[0]]) === Number(filtro[3])));
+      }
+    });
+  };
+
   const buttonFilter = ({ target }) => {
-    if (comparison === 'igual a') {
-      setPlanetData(planetData.filter((planet) => planet[columns] === number));
-    }
     if (comparison === 'menor que') {
       setPlanetData(planetData.filter((planet) => planet[columns] < Number(number)));
     }
     if (comparison === 'maior que') {
       setPlanetData(planetData.filter((planet) => planet[columns] > Number(number)));
+    }
+    if (comparison === 'igual a') {
+      setPlanetData(planetData.filter((planet) => planet[columns] === number));
     }
     setFilters([...filters, `${columns} ${comparison} ${number}`]);
     if (options.includes(columns)) {
@@ -46,6 +66,17 @@ function Table() {
       return;
     }
     setOptions([...options, target.value]);
+  };
+
+  const filterRemover = () => {
+    setFilters([]);
+    setFiltered(true);
+  };
+
+  const removeOneFilter = ({ target }) => {
+    const remainingFilters = filters.filter((f) => f[0] !== target.name[0]);
+    setFilters(remainingFilters);
+    RedoFilters();
   };
 
   const handleChange = ({ target }) => {
@@ -63,6 +94,18 @@ function Table() {
   useEffect(() => {
     setColumns(options[0]);
   }, [options]);
+
+  useEffect(
+    () => {
+      if (filters.length === 0 || filtered === true) {
+        getPlanets();
+        setFiltered(false);
+      } else {
+        RedoFilters();
+      }
+    },
+    [filters],
+  );
 
   return (
     <main>
@@ -110,7 +153,14 @@ function Table() {
           data-testid="button-filter"
           onClick={ buttonFilter }
         >
-          FILTRAR
+          Filtrar
+        </button>
+        <button
+          type="button"
+          data-testid="button-remove-filters"
+          onClick={ filterRemover }
+        >
+          Limpar
         </button>
       </label>
       {
@@ -122,7 +172,8 @@ function Table() {
                 { filter }
                 <button
                   type="button"
-                  name={ columns }
+                  name={ filter }
+                  onClick={ removeOneFilter }
                 >
                   X
                 </button>
@@ -156,7 +207,7 @@ function Table() {
                   planetData
                     .map((planet, index) => (
                       <tr key={ index }>
-                        <td>{ planet.name }</td>
+                        <td data-testid="planet-name">{ planet.name }</td>
                         <td>{ planet.rotation_period }</td>
                         <td>{ planet.orbital_period }</td>
                         <td>{ planet.diameter }</td>
