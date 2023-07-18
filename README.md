@@ -12,7 +12,7 @@ Essa é uma aplicação de pesquisa de planetas da obra star wars, as informaç�
 
 ## Como abrir a aplicação
 
-Você deve clonar o repositório para a sua máquina, quando ja tiver os arquivos no seu PC, pode usar a extensão LiveServer para rodar a aplicação, alternativamente, funciona se der um duplo clique no arquivo index.html, qualquer jeito usado abrirá a aplicação em seu navegador.
+Você deve clonar o repositório para a sua máquina, abrir o terminal e digitar 'npm start', então deverá se abrir uma nova aba em seu navegador onde será possível visualizar e interagir com a aplicação
 
 ## Funcionalidades
 
