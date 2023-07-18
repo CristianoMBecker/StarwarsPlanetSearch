@@ -1,13 +1,20 @@
-# :construction: README customizado em construção ! :construction:
-<!-- Olá, Tryber!
-Esse é apenas um arquivo inicial para o README do seu projeto no qual você pode customizar e reutilizar todas as vezes que for executar o trybe-publisher.
+## Descrição
 
-Para deixá-lo com a sua cara, basta alterar o seguinte arquivo da sua máquina: ~/.student-repo-publisher/custom/_NEW_README.md
+Essa é uma aplicação de pesquisa de planetas da obra star wars, as informações encontradas no site sobre os planetas vem de uma Api de star wars, para criar a aplicação usei o react native para criar as telas, e os hooks do próprio react para gerenciar os estados globais
 
-É essencial que você preencha esse documento por conta própria, ok?
-Não deixe de usar nossas dicas de escrita de README de projetos, e deixe sua criatividade brilhar!
-:warning: IMPORTANTE: você precisa deixar nítido:
-- quais arquivos/pastas foram desenvolvidos por você; 
-- quais arquivos/pastas foram desenvolvidos por outra pessoa estudante;
-- quais arquivos/pastas foram desenvolvidos pela Trybe.
--->
+## Tecnologias Utilizadas
+
+- React
+- CSS
+- JavaScript
+- API Star Wars
+- Hooks
+
+## Como abrir a aplicação
+
+Você deve clonar o repositório para a sua máquina, quando ja tiver os arquivos no seu PC, pode usar a extensão LiveServer para rodar a aplicação, alternativamente, funciona se der um duplo clique no arquivo index.html, qualquer jeito usado abrirá a aplicação em seu navegador.
+
+## Funcionalidades
+
+- Filtrar as informações dos planetas
+- Ordenar os planetas
